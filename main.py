@@ -181,6 +181,7 @@ def BFS(r, k) :
                     else :
                         list_dag[v].append(u)
         i = i + 1
+    print()
 
 if __name__=="__main__":
     ### sys.argv[1] : name of data graph file
@@ -188,5 +189,7 @@ if __name__=="__main__":
     ### sys.argv[3] : the number of query in query graph file
     read_G(sys.argv[1])                     # read the data graph file
     read_q(sys.argv[2], int(sys.argv[3]))   # read the query graph file
-    root = select_root(0)                   # find the dag for a query file (pass id of the query graph)
-    BFS(root, 0)
+    # print the dag for each query file
+    for k in range(num_q) :
+        root = select_root(k)
+        BFS(root, k)
