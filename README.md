@@ -7,7 +7,7 @@
 DAG 생성 방법
 - DAG를 만드는 프로그램("program")의 실행파일 생성 : ./compile.sh
 - 100개의 DAG 생성 (조교님이 주신 테스트 케이스) : ./program human human_40n 100 > human_40n.dag
-- 100개의 DAG 생성 (논문 그림 테스트 케이스) : ./program test test_40n 100 > test_40n.dag
+- 100개의 DAG 생성 (논문 그림 테스트 케이스) : python main.py test test_40n 100 (지금은 화면으로 결과가 출력됨)
 
 실행 
 - (1) 기본 실행 : ./daf_1min -d human -q human_40n -n 100
