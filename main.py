@@ -27,8 +27,7 @@ def read_G(input_G) :
     # read input_G file
     with open(input_G, 'r') as f :
         largest_label = -1
-        label_set = set()
-        input_line = ""
+        label_set = set()        
 
         # read "t 1 [#v]"
         vnum_G = int(f.readline().split()[2])   # number of vertices in G
@@ -151,11 +150,10 @@ def find_new_left(left, right, degree_u) :
     return i
 
 def BFS(r, k) :
-    global visited, vnum_q, list_q, list_dag, degree_q
+    global visited, vnum_q, list_q, sorted_v_q, degree_q, label_q, 
     q = queue.Queue()
     visited = [False for _ in range(vnum_q[k])]
     visited[r] = True
-    list_dag = [[] for _ in range(vnum_q[k])]
     level = [0 for _ in range(vnum_q[k])]
     level[r] = 0
     q.put(r)
@@ -163,24 +161,23 @@ def BFS(r, k) :
     i = 1
     while (q.qsize() != 0) :
         u = q.get()
-        print(u, end=" ")
+        #print(u, end=" ")
         for v in list_q[k][u] :
             if (not visited[v]) :
                 visited[v] = True
                 q.put(v)
-                list_dag[u].append(v)
                 level[v] = i
-            elif (level[u] == level[v]) :
-                if (label_freq_G[u] < label_freq_G[v]) :
-                    list_dag[u].append(v)
-                elif (label_freq_G[u] > label_freq_G[v]) :
-                    list_dag[v].append(u)
-                else :
-                    if (degree_q[k][u] >= degree_q[k][v]) :
-                        list_dag[u].append(v)
-                    else :
-                        list_dag[v].append(u)
         i = i + 1
+
+    sorted_v_q = [i for i in range(vnum_q)]
+
+    sorted_v_q.sort(key = lambda v:degree_q[k][v])
+    sorted_v_q.sort(key = lambda v:label_q[v])
+    sorted_v_q.sort(key = lambda v:label_freq_G[label_q[v]])
+    sorted_v_q.sort(key = lambda v:level[v])
+
+    for i in range(vnum_q) :
+        print(sorted_v_q[i], end=" ")
     print()
 
 if __name__=="__main__":
