@@ -19,7 +19,7 @@ global degree_q             # k-th element : list of degrees of vertices in k-th
 global renamedlabel_q       # k-th element : list of degrees of vertices in k-th query graph'
 global num_q                # total number of query graphs
 global visited              # visit flag for BFS
-global list_dag             # data structure for constructing query DAG while executing BFS
+global sorted_v_q             # data structure for constructing query DAG while executing BFS
 
 def read_G(input_G) :
     global vnum_G, list_G, label_G, label_freq_G, degree_G, renamedlabel_G, sorted_v, sorted_v_index
@@ -150,7 +150,7 @@ def find_new_left(left, right, degree_u) :
     return i
 
 def BFS(r, k) :
-    global visited, vnum_q, list_q, sorted_v_q, degree_q, label_q, 
+    global visited, vnum_q, list_q, sorted_v_q, degree_q, label_q 
     q = queue.Queue()
     visited = [False for _ in range(vnum_q[k])]
     visited[r] = True
@@ -169,14 +169,14 @@ def BFS(r, k) :
                 level[v] = i
         i = i + 1
 
-    sorted_v_q = [i for i in range(vnum_q)]
+    sorted_v_q = [i for i in range(vnum_q[k])]
 
-    sorted_v_q.sort(key = lambda v:degree_q[k][v])
-    sorted_v_q.sort(key = lambda v:label_q[v])
-    sorted_v_q.sort(key = lambda v:label_freq_G[label_q[v]])
+    sorted_v_q.sort(key = lambda v:degree_q[k][v], reverse=True)
+    sorted_v_q.sort(key = lambda v:label_q[k][v])
+    sorted_v_q.sort(key = lambda v:label_freq_G[label_q[k][v]])
     sorted_v_q.sort(key = lambda v:level[v])
 
-    for i in range(vnum_q) :
+    for i in range(vnum_q[k]) :
         print(sorted_v_q[i], end=" ")
     print()
 
