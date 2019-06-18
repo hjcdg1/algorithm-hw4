@@ -7,3 +7,7 @@ number of end queries는 82 였다.
 average total time per Query는 21.5583 ms
 average recursive call count는 22651.4024
 number of end queries는 82 였다.
+
+따라서 average total time per Query는 original에 비해 0.2배 시간만큼 소요되었다.
+average recursive call count도 3만개 이하로 줄였다.
+number of end queries는 변하지 않았다.
