@@ -1,0 +1,9 @@
+2. original algorithm에서
+average total time per Query는 110.0845 ms
+average recursive call count는 30885.7683
+number of end queries는 82 였다.
+
+우리 알고리즘에서
+average total time per Query는 21.5583 ms
+average recursive call count는 22651.4024
+number of end queries는 82 였다.
