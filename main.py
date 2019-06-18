@@ -14,9 +14,9 @@ global sorted_v_index       # sorted_v_index[l] : first index (in sorted_v array
 global vnum_q               # k-th element : the number of vertices in k-th query graph
 global list_q               # k-th element : adjacent list representing k-th query graph
 global label_q              # k-th element : list of labels of vertices in k-th query graph
-global label_freq_q         # k-th element : list of frequency of each label in k-th query graph'
+global label_freq_q         # k-th element : list of frequency of each label in k-th query graph' (unnecessary! use one of G instead)
 global degree_q             # k-th element : list of degrees of vertices in k-th query graph
-global renamedlabel_q       # k-th element : list of degrees of vertices in k-th query graph'
+global renamedlabel_q       # k-th element : list of degrees of vertices in k-th query graph' (unnecessary! use one of G instead)
 global num_q                # total number of query graphs
 global visited              # visit flag for BFS
 global list_dag             # data structure for constructing query DAG while executing BFS
@@ -64,14 +64,13 @@ def read_G(input_G) :
         label_id = 0
 
         f.readline() # ignore the first line
+
+        # read every "v [v_id] [label]"
         for i in range(vnum_G) :
             label = int(f.readline().split()[2])
-            try :
-                if (renamedlabel_G[label] == -1) :
-                    renamedlabel_G[label] = label_id
-                    label_id = label_id + 1
-            except :
-                print(label, len(renamedlabel_G))
+            if (renamedlabel_G[label] == -1) :
+                renamedlabel_G[label] = label_id
+                label_id = label_id + 1
             label_G[i] = renamedlabel_G[label]
             label_freq_G[renamedlabel_G[label]] = label_freq_G[renamedlabel_G[label]] + 1
 
@@ -109,11 +108,7 @@ def read_q(input_q, n) :
             for i in range(vnum_q[k]) :
                 line = f.readline()
                 info = line.split()
-                try :
-                    label_q[k][i] = renamedlabel_G[int(info[1])]
-                except :
-                    print(len(renamedlabel_G))
-                    exit(0)
+                label_q[k][i] = renamedlabel_G[int(info[1])]
                 degree_q[k][i] = int(info[2])
                 for j in range(degree_q[k][i]) :
                     des = int(info[j+3])
@@ -171,15 +166,21 @@ def BFS(r, k) :
                 list_dag[u].append(v)
                 level[v] = i
             elif (level[u] == level[v]) :
-                if (label_freq_G[u] < label_freq_G[v]) :
+                if (label_freq_G[label_q[u]] < label_freq_G[label_q[v]]) :
                     list_dag[u].append(v)
-                elif (label_freq_G[u] > label_freq_G[v]) :
+                elif (label_freq_G[label_q[u]] > label_freq_G[label_q[v]]) :
                     list_dag[v].append(u)
                 else :
                     if (degree_q[k][u] >= degree_q[k][v]) :
                         list_dag[u].append(v)
                     else :
                         list_dag[v].append(u)
+            else
+                if (level[u] < level[v]) :
+                    list_dag[u].append(v)
+                else :
+                    list_dag[v].append(u)
+
         i = i + 1
     print()
 
