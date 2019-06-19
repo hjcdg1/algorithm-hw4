@@ -131,7 +131,7 @@ def select_root(k) :
         new_left = find_new_left(left, right - 1, degree)
         size_C = right - new_left
 
-        rank = (size_C)**2 /(float(degree))
+        rank = size_C - 2*(float(degree))
         if (rank < min) :
             min = rank
             root = u
